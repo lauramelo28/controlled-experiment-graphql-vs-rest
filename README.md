@@ -32,3 +32,23 @@ Para realizar o desenho do experimento, será definido cada um dos tópicos a se
  
 ## 👨‍🏫 Professor:
 * João Paulo Carneiro Aramuni
+
+## Instruções de Execução
+
+### Pré-requisitos
+
+1. **Instalar Go**: [Baixe e instale o Go](https://go.dev/dl/).
+2. **Configurar o Token do GitHub**:
+   - Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+     ```
+     PERSONAL_ACCESS_TOKEN={token}
+     ```
+   - Substitua `{token}` pelo seu token de acesso do GitHub.
+
+### Executando o Projeto
+
+1. Abra o terminal e navegue até o diretório do projeto `cd src/`.
+2. Execute o comando:
+
+   ```bash
+   go run fetch_github_api_data.go
