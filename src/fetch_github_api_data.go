@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/csv"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,7 +16,7 @@ const (
 	restEndpoint  = "https://api.github.com/search/repositories?q=stars:>0&sort=stars&order=desc&per_page=10"
 	graphqlURL    = "https://api.github.com/graphql"
 	queryGraphQL  = `{"query": "query($number_of_repos_per_request: Int!, $cursor: String) { search(query: \"stars:>0\", type: REPOSITORY, first: $number_of_repos_per_request, after: $cursor) { edges { node { ... on Repository { name createdAt url stargazers { totalCount } issues(states: CLOSED) { totalCount } pullRequests(states: [OPEN, CLOSED, MERGED]) { totalCount } releases { totalCount } primaryLanguage { name } closedIssues: issues(states: [CLOSED]) { totalCount } totalIssues: issues(states: [OPEN, CLOSED]) { totalCount } defaultBranchRef { name target { ... on Commit { committedDate } } } } } } pageInfo { hasNextPage endCursor } } }", "variables": {"number_of_repos_per_request": 10, "cursor": null}}`
-	repetitions   = 30
+	repetitions   = 1000
 )
 
 type Measurement struct {
@@ -47,11 +48,9 @@ func main() {
 		measurements = append(measurements, measurement)
 	}
 
-	fmt.Println("Resultados do Experimento:")
-	for _, measurement := range measurements {
-		fmt.Printf("API: %s | Tempo de Resposta: %dms | Tamanho da Resposta: %d bytes\n",
-			measurement.APIType, measurement.ResponseTime, measurement.ResponseSize)
-	}
+	// Salvar os resultados no arquivo CSV
+	saveToCSV("resultados.csv", measurements)
+	fmt.Println("Resultados salvos em 'resultados.csv'")
 }
 
 // Função responsável por fazer consultas à API REST e medir tempo e tamanho da resposta
@@ -102,5 +101,29 @@ func measureGraphQL(token string) Measurement {
 		APIType:      "GraphQL",
 		ResponseTime: duration,
 		ResponseSize: len(body),
+	}
+}
+
+// Função para salvar os resultados em um arquivo CSV
+func saveToCSV(filename string, measurements []Measurement) {
+	file, err := os.Create(filename)
+	if err != nil {
+		fmt.Println("Erro ao criar o arquivo CSV:", err)
+		return
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	writer.Write([]string{"API", "Tempo de Resposta (ms)", "Tamanho da Resposta (bytes)"})
+
+	for _, m := range measurements {
+		row := []string{
+			m.APIType,
+			fmt.Sprintf("%d", m.ResponseTime),
+			fmt.Sprintf("%d", m.ResponseSize),
+		}
+		writer.Write(row)
 	}
 }
