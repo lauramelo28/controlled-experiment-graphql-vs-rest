@@ -16,7 +16,7 @@ const (
 	restEndpoint  = "https://api.github.com/search/repositories?q=stars:>0&sort=stars&order=desc&per_page=10"
 	graphqlURL    = "https://api.github.com/graphql"
 	queryGraphQL  = `{"query": "query($number_of_repos_per_request: Int!, $cursor: String) { search(query: \"stars:>0\", type: REPOSITORY, first: $number_of_repos_per_request, after: $cursor) { edges { node { ... on Repository { name createdAt url stargazers { totalCount } issues(states: CLOSED) { totalCount } pullRequests(states: [OPEN, CLOSED, MERGED]) { totalCount } releases { totalCount } primaryLanguage { name } closedIssues: issues(states: [CLOSED]) { totalCount } totalIssues: issues(states: [OPEN, CLOSED]) { totalCount } defaultBranchRef { name target { ... on Commit { committedDate } } } } } } pageInfo { hasNextPage endCursor } } }", "variables": {"number_of_repos_per_request": 10, "cursor": null}}`
-	repetitions   = 1000
+	repetitions   = 5000
 )
 
 type Measurement struct {
