@@ -50,7 +50,7 @@ Esse delineamento permite uma análise robusta do desempenho, o impacto do volum
 
 
 #### F. Quantidade de Medições
-Para assegurar validade e confiabilidade, cada tipo de consulta será repetido pelo menos 1000 vezes para cada API (GraphQL e REST), de forma que as variâncias possam ser controladas e dados atípicos, identificados.
+Para assegurar validade e confiabilidade, cada tipo de consulta será repetido pelo menos 5000 vezes para cada API (GraphQL e REST), de forma que as variâncias possam ser controladas e dados atípicos, identificados.
 
 #### G. Ameaças à Validade
 
@@ -64,11 +64,11 @@ Para assegurar validade e confiabilidade, cada tipo de consulta será repetido p
 
 ### 2.1 Criação do Dataset
 
-Este experimento compara o desempenho entre as APIs REST e GraphQL do GitHub. Utilizaremos consultas similares àquelas do trabalho anterior, "Análise de repositórios populares no GitHub - [Lab01]", buscando dados de repositórios populares. Os dados serão coletados tanto via API REST quanto via GraphQL e estruturados de forma similar para garantir uma comparação justa. Para mitigar ameaças à validade, realizaremos 1000 requisições para cada API, permitindo uma análise estatística mais robusta e minimizando o impacto de variações momentâneas no desempenho.
+Este experimento compara o desempenho entre as APIs REST e GraphQL do GitHub. Utilizaremos consultas similares àquelas do trabalho anterior, "Análise de repositórios populares no GitHub - [Lab01]", buscando dados de repositórios populares. Os dados serão coletados tanto via API REST quanto via GraphQL e estruturados de forma similar para garantir uma comparação justa. Para mitigar ameaças à validade, realizaremos 5000 requisições para cada API, permitindo uma análise estatística mais robusta e minimizando o impacto de variações momentâneas no desempenho.
 
 ### 2.2 Consultas
 
-As consultas a seguir serão utilizadas para recuperar informações sobre os repositórios. Ambas as consultas são projetadas para retornar informações semelhantes, como nome, data de criação, URL, número de estrelas, issues, pull requests, releases e linguagem principal. A repetição de 1000 requisições para cada consulta nos permitirá medir o tempo médio de resposta e outras métricas de desempenho.
+As consultas a seguir serão utilizadas para recuperar informações sobre os repositórios. Ambas as consultas são projetadas para retornar informações semelhantes, como nome, data de criação, URL, número de estrelas, issues, pull requests, releases e linguagem principal. A repetição de 5000 requisições para cada consulta nos permitirá medir o tempo médio de resposta e outras métricas de desempenho.
 
 **GraphQL:**
 
@@ -115,19 +115,19 @@ Variáveis da consulta GraphQL:
 }
 
 
-A consulta GraphQL busca 10 repositórios por requisição (number_of_repos_per_request: 10) e utiliza a paginação via cursor (after: $cursor) para obter os próximos resultados nas requisições subsequentes. O cursor será atualizado a cada requisição com o valor de endCursor retornado pela consulta anterior. Este processo será repetido 100 vezes para completar as 1000 requisições, totalizando a coleta de dados de 1000 repositórios.
+A consulta GraphQL busca 10 repositórios por requisição (number_of_repos_per_request: 10) e utiliza a paginação via cursor (after: $cursor) para obter os próximos resultados nas requisições subsequentes. O cursor será atualizado a cada requisição com o valor de endCursor retornado pela consulta anterior. Este processo será repetido 100 vezes para completar as 5000 requisições, totalizando a coleta de dados de 5000 repositórios.
 
 REST:
 
 https://api.github.com/search/repositories?q=stars:>0&sort=stars&order=desc&per_page=10
 
-A consulta REST utiliza parâmetros de URL para buscar 10 repositórios por página (per_page=10), ordenados por número de estrelas decrescente (sort=stars&order=desc). Similarmente à consulta GraphQL, a paginação será utilizada para obter os 1000 repositórios através de múltiplas requisições. A paginação na API REST geralmente é feita através de um parâmetro page ou de um link de paginação fornecido no cabeçalho da resposta. Este processo também será repetido até completar as 1000 requisições.
+A consulta REST utiliza parâmetros de URL para buscar 10 repositórios por página (per_page=10), ordenados por número de estrelas decrescente (sort=stars&order=desc). Similarmente à consulta GraphQL, a paginação será utilizada para obter os 5000 repositórios através de múltiplas requisições. A paginação na API REST geralmente é feita através de um parâmetro page ou de um link de paginação fornecido no cabeçalho da resposta. Este processo também será repetido até completar as 5000 requisições.
 
-Ao executar 1000 requisições para cada API, poderemos comparar o desempenho em cenários de carga mais realistas e obter resultados mais confiáveis.
+Ao executar 5000 requisições para cada API, poderemos comparar o desempenho em cenários de carga mais realistas e obter resultados mais confiáveis.
 
 ## 5. Resultados
 
-Os resultados obtidos após a execução de 1000 requisições para cada API demonstram uma diferença significativa no desempenho entre REST e GraphQL.
+Os resultados obtidos após a execução de 5000 requisições para cada API demonstram uma diferença significativa no desempenho entre REST e GraphQL.
 
 A API REST apresentou uma média de tempo de resposta de 209,841 ms, enquanto a GraphQL obteve uma média de 170,775 ms.  Isso indica que, neste experimento, as consultas GraphQL foram, em média, mais rápidas que as consultas REST.
 

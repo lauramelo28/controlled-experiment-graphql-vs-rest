@@ -47,8 +47,12 @@ Para realizar o desenho do experimento, será definido cada um dos tópicos a se
 
 ### Executando o Projeto
 
-1. Abra o terminal e navegue até o diretório do projeto `cd src/`.
-2. Execute o comando:
+1. Caso não tenha o Go instalado em sua máquina, instale através do site oficial (https://golang.org/dl/), seguindo as instruçõesde instalação.
+2. Verifique que o Go está devivamente instalado em seu sistema, executando o seguinte comando em seu terminal
+      ```bash
+      go version
+3. Abra o terminal e navegue até o diretório do projeto `cd src/`.
+4. Execute o comando:
 
    ```bash
    go run fetch_github_api_data.go
