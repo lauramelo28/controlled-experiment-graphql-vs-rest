@@ -133,11 +133,15 @@ A API REST apresentou uma média de tempo de resposta de 209,841 ms, enquanto a 
 
 Em relação ao tamanho da resposta, a API GraphQL apresentou uma média de 95,534 ms contra 98 ms da API REST. Isso sugere que as respostas GraphQL, em termos de tamanho, foram ligeiramente menores.
 
+<div align="center">
+
 
 | Métrica                      | REST      | GraphQL   |
 |-------------------------------|-----------|-----------|
 | Tempo de Resposta (ms) | 209,841  | 170,775  |
 | Tamanho de Resposta (ms)  | 98 | 95,534 |
+
+</div>
 
 Esses resultados sugerem que a API GraphQL oferece um desempenho superior em termos de tempo de resposta para este cenário específico, com uma pequena vantagem também no tamanho da resposta.  No entanto, é importante lembrar que este é apenas um experimento e os resultados podem variar dependendo de diversos fatores, como a complexidade da consulta, a carga do servidor e a qualidade da conexão de rede.
 
